@@ -6,7 +6,7 @@ var connect = require('gulp-connect');
 var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
-var clean = require('gulp-clean');
+var del = require('del');
 
 // tasks
 gulp.task('lint', function() {
@@ -16,8 +16,10 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('fail'));
 });
 gulp.task('clean', function() {
-    return gulp.src('./dist/*')
-      .pipe(clean({force: true}));
+  return del([
+    // here we use a globbing pattern to match everything inside the `dist` folder
+    'dist/**/*'
+  ]);
 });
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
