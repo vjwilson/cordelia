@@ -7,6 +7,7 @@ var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
 var del = require('del');
+var runSequence = require('run-sequence');
 
 // tasks
 gulp.task('lint', function() {
@@ -15,18 +16,22 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('default'))
     .pipe(jshint.reporter('fail'));
 });
-gulp.task('clean', function() {
-  return del([
-    // here we use a globbing pattern to match everything inside the `dist` folder
-    'dist/**/*'
-  ]);
+
+// Clean output directory
+gulp.task('clean', function(cb) {
+  return ( del(
+    ['dist/**/*'],
+    cb )
+  );
 });
+
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
   gulp.src(['./app/**/*.css', '!./app/bower_components/**'])
     .pipe(minifyCSS(opts))
     .pipe(gulp.dest('./dist/'))
 });
+
 gulp.task('minify-js', function() {
   gulp.src(['./app/**/*.js', '!./app/bower_components/**'])
     .pipe(uglify({
@@ -35,14 +40,17 @@ gulp.task('minify-js', function() {
     }))
     .pipe(gulp.dest('./dist/'))
 });
+
 gulp.task('copy-bower-components', function () {
   gulp.src('./app/bower_components/**')
     .pipe(gulp.dest('dist/bower_components'));
 });
+
 gulp.task('copy-html-files', function () {
   gulp.src('./app/**/*.html')
     .pipe(gulp.dest('dist/'));
 });
+
 gulp.task('connect', function () {
   connect.server({
     root: 'app/',
@@ -56,11 +64,20 @@ gulp.task('connectDist', function () {
   });
 });
 
-// default task
+// default task: check syntax and local server
 gulp.task('default',
   ['lint', 'connect']
 );
+
 // build task
-gulp.task('build',
-  ['lint', 'minify-css', 'minify-js', 'copy-html-files', 'copy-bower-components', 'connectDist']
-);
+gulp.task('build', ['clean'], function(cb) {
+  runSequence(
+    'lint',
+    'minify-css',
+    'minify-js',
+    'copy-html-files',
+    'copy-bower-components',
+    'connectDist', 
+    cb
+  );
+});
