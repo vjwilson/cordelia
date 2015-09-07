@@ -1,5 +1,7 @@
 #Cordelia
 
+[![Build Status](https://travis-ci.org/vjwilson/cordelia.svg?branch=master)](https://travis-ci.org/vjwilson/cordelia)
+
 A prototype project for experimenting with Angular, build processes, and front-end testing
 
 ##Getting Started
