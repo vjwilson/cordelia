@@ -4,6 +4,7 @@
   "description": "Testing gulp with angular, testing directives",
   "main": "gulpfile.js",
   "scripts": {
+    "postinstall": "bower install",
     "test": "karma start test/karma.conf.js"
   },
   "keywords": [
