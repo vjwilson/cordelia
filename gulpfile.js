@@ -2,11 +2,13 @@
 var gulp = require('gulp');
 
 // plugins
-var connect = require('gulp-connect');
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
+var connect   = require('gulp-connect');
+var jshint    = require('gulp-jshint');
+var uglify    = require('gulp-uglify');
+var concat    = require('gulp-concat');
 var minifyCSS = require('gulp-minify-css');
-var del = require('del');
+var maps      = require('gulp-sourcemaps');
+var del       = require('del');
 var runSequence = require('run-sequence');
 
 var paths = {
@@ -38,12 +40,26 @@ gulp.task('clean', function(cb) {
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
   gulp.src(paths.src.css)
+    .pipe(maps.init())
     .pipe(minifyCSS(opts))
+    .pipe(maps.write('./'))
     .pipe(gulp.dest('./dist/css'))
 });
 
+gulp.task("concat-js", function() {
+    return gulp.src([
+        'app/js/main.js',
+        'app/js/state1.list.controller.js',
+        'app/js/state2.list.controller.js'
+        ])
+    .pipe(maps.init())
+    .pipe(concat('app.js'))
+    .pipe(maps.write('./'))
+    .pipe(gulp.dest('app/js'));
+});
+
 gulp.task('minify-js', function() {
-  gulp.src(paths.src.js)
+  gulp.src('app/js/app.js')
     .pipe(uglify({
       // inSourceMap:
       // outSourceMap: "app.js.map"
@@ -84,6 +100,7 @@ gulp.task('build', ['clean'], function(cb) {
   runSequence(
     'lint',
     'minify-css',
+    'concat-js',
     'minify-js',
     'copy-html-files',
     'copy-bower-components',
