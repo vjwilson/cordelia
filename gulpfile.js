@@ -2,11 +2,13 @@
 var gulp = require('gulp');
 
 // plugins
-var connect = require('gulp-connect');
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
-var minifyCSS = require('gulp-minify-css');
-var del = require('del');
+var connect     = require('gulp-connect');
+var jshint      = require('gulp-jshint');
+var uglify      = require('gulp-uglify');
+var concat      = require('gulp-concat');
+var minifyCSS   = require('gulp-minify-css');
+var sourcemaps  = require('gulp-sourcemaps');
+var del         = require('del');
 var runSequence = require('run-sequence');
 
 var paths = {
@@ -30,7 +32,7 @@ gulp.task('lint', function() {
 // Clean output directory
 gulp.task('clean', function(cb) {
   return ( del(
-    ['dist/**/*'],
+    ['dist'],
     cb )
   );
 });
@@ -38,17 +40,23 @@ gulp.task('clean', function(cb) {
 gulp.task('minify-css', function() {
   var opts = {comments:true,spare:true};
   gulp.src(paths.src.css)
+    .pipe(sourcemaps.init())
     .pipe(minifyCSS(opts))
-    .pipe(gulp.dest('./dist/css'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/css'));
 });
 
-gulp.task('minify-js', function() {
-  gulp.src(paths.src.js)
-    .pipe(uglify({
-      // inSourceMap:
-      // outSourceMap: "app.js.map"
-    }))
-    .pipe(gulp.dest('./dist/js'))
+gulp.task("js", function() {
+    return gulp.src([
+        'app/js/main.js',
+        'app/js/state1.list.controller.js',
+        'app/js/state2.list.controller.js'
+        ])
+    .pipe(sourcemaps.init())
+    .pipe(concat('app.js'))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('copy-bower-components', function () {
@@ -61,12 +69,6 @@ gulp.task('copy-html-files', function () {
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('connect', function () {
-  connect.server({
-    root: 'app/',
-    port: 8888
-  });
-});
 gulp.task('connectDist', function () {
   connect.server({
     root: 'dist/',
@@ -74,20 +76,19 @@ gulp.task('connectDist', function () {
   });
 });
 
-// default task: check syntax and local server
-gulp.task('default',
-  ['lint', 'connect']
-);
-
 // build task
 gulp.task('build', ['clean'], function(cb) {
   runSequence(
     'lint',
     'minify-css',
-    'minify-js',
+    'js',
     'copy-html-files',
     'copy-bower-components',
     'connectDist', 
     cb
   );
 });
+
+gulp.task('default',
+  ['build']
+);
