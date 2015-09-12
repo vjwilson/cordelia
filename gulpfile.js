@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var connect   = require('gulp-connect');
 var jshint    = require('gulp-jshint');
 var uglify    = require('gulp-uglify');
+var rename    = require('gulp-rename');
 var concat    = require('gulp-concat');
 var minifyCSS = require('gulp-minify-css');
 var maps      = require('gulp-sourcemaps');
@@ -32,7 +33,7 @@ gulp.task('lint', function() {
 // Clean output directory
 gulp.task('clean', function(cb) {
   return ( del(
-    ['dist/**/*'],
+    ['dist', 'app/js/app*.js*'],
     cb )
   );
 });
@@ -64,6 +65,7 @@ gulp.task('minify-js', function() {
       // inSourceMap:
       // outSourceMap: "app.js.map"
     }))
+    .pipe(rename('app.min.js'))
     .pipe(gulp.dest('./dist/js'))
 });
 
