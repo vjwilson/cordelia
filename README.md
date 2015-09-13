@@ -13,31 +13,35 @@ Copy the repository and install the dependencies.
     npm install
     bower install
     
-To preview the app, start the server task:
+To preview the app, build the app and start the server task:
 
-    gulp connect
+    gulp
     
-Then, vist [http://localhost:8888](http://localhost:8888) in a browser.
+Then, vist [http://localhost:9999](http://localhost:9999) in a browser.
 
 ##Local development
 
-To experiment with the app yourself, be sure to fork it first, and then clone your fork.
+To experiment with the app yourself, be sure to [fork this project](https://guides.github.com/activities/forking/) in GitHub first, and then clone your fork.
 
-When you run `gulp connect`, the app is served out of the `app/` folder. Make changes to the files in that folder.
+The source files are in the `app/` folder. Make changes to the files in that folder.
+
+As part of the default Gulp task, a watch and a livereload task run, so you can see changes you make to the source files instantly.
 
 ##Deploying the app
 
-To deploy a production version of the app to a remote server, you can build a minified copy of the app in a `dist/` folder, and then copy that folder to a server.
+To deploy a production version of the app to a remote server, you can build the app and then copy the minified version of the app in the `dist/` folder to a server.
 
-First, remove any old build:
-
-    gulp clean
+(Every time you run `gulp`, a minified version will exist in the `dist/` folder.)
     
-Then, build a new `dist/` folder:
+You can make a new `dist/` folder, without running the local server, with this command:
 
     gulp build
 
 The build task also starts a local server on a different port. You can preview the production version by visting [http://localhost:9999](http://localhost:9999) in a browser.
+
+If you want to remove an old build, without creating a new one yet, just run:
+
+    gulp clean
 
 ##Credits
 

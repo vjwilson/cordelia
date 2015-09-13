@@ -43,7 +43,8 @@ gulp.task('minify-css', function() {
     .pipe(sourcemaps.init())
     .pipe(minifyCSS(opts))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist/css'));
+    .pipe(gulp.dest('./dist/css'))
+    .pipe(connect.reload());
 });
 
 gulp.task("js", function() {
@@ -56,7 +57,8 @@ gulp.task("js", function() {
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/js'))
+    .pipe(connect.reload());
 });
 
 gulp.task('copy-bower-components', function () {
@@ -72,8 +74,14 @@ gulp.task('copy-html-files', function () {
 gulp.task('connectDist', function () {
   connect.server({
     root: 'dist/',
-    port: 9999
+    port: 9999,
+    livereload: true
   });
+});
+
+gulp.task('watchFiles', function() {
+  gulp.watch(paths.src.js, ['js']);
+  gulp.watch(paths.src.css, ['minify-css']);
 });
 
 // build task
@@ -84,7 +92,8 @@ gulp.task('build', ['clean'], function(cb) {
     'js',
     'copy-html-files',
     'copy-bower-components',
-    'connectDist', 
+    'connectDist',
+    'watchFiles',
     cb
   );
 });
