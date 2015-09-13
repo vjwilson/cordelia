@@ -6,6 +6,7 @@ var connect     = require('gulp-connect');
 var jshint      = require('gulp-jshint');
 var uglify      = require('gulp-uglify');
 var concat      = require('gulp-concat');
+var sass        = require('gulp-sass');
 var minifyCSS   = require('gulp-minify-css');
 var sourcemaps  = require('gulp-sourcemaps');
 var del         = require('del');
@@ -15,7 +16,7 @@ var paths = {
   bower:      'app/bower_components/**',
   src: {
     html:  'app/**/*.html',
-    css:   'app/css/**/*.css',
+    css:   'app/scss/**/*.scss',
     js:    ['app/js/**/*.js',
             '!app/js/**/*.test.js']
   }
@@ -37,11 +38,11 @@ gulp.task('clean', function(cb) {
   );
 });
 
-gulp.task('minify-css', function() {
-  var opts = {comments:true,spare:true};
-  gulp.src(paths.src.css)
+gulp.task('sass', function() {
+  return gulp.src(paths.src.css)
     .pipe(sourcemaps.init())
-    .pipe(minifyCSS(opts))
+    .pipe(sass())
+    .pipe(minifyCSS())
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist/css'))
     .pipe(connect.reload());
@@ -81,14 +82,14 @@ gulp.task('connectDist', function () {
 
 gulp.task('watchFiles', function() {
   gulp.watch(paths.src.js, ['js']);
-  gulp.watch(paths.src.css, ['minify-css']);
+  gulp.watch(paths.src.css, ['sass']);
 });
 
 // build task
 gulp.task('build', ['clean'], function(cb) {
   runSequence(
     'lint',
-    'minify-css',
+    'sass',
     'js',
     'copy-html-files',
     'copy-bower-components',
