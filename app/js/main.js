@@ -3,7 +3,10 @@
 'use strict';
 
 
-  var app = angular.module('cordeliaApp', ['ui.router', 'ngAnimate']);
+  var app = angular.module('cordeliaApp', [
+    'ui.router',
+    'ngAnimate'
+  ]);
 
   /* Configuration */
 
