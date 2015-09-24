@@ -16,6 +16,24 @@
         var vm = $scope;
 
         vm.user = 'Richard Burbage';
+
+        vm.sidebarMenuItems = [
+          {
+            state: 'dashboard',
+            menuTitle: 'Dashboard',
+            icon: 'dashboard'
+          },
+          {
+            state: 'state1',
+            menuTitle: 'State 1',
+            icon: 'edit'
+          },
+          {
+            state: 'state2',
+            menuTitle: 'State 2',
+            icon: 'desktop'
+          }
+        ];
       }
     };
   }

@@ -114,14 +114,8 @@
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li>
-                <a ui-sref="dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-            </li>
-            <li>
-                <a ui-sref="state1"><i class="fa fa-fw fa-bar-chart-o"></i> State 1</a>
-            </li>
-            <li>
-                <a ui-sref="state2"><i class="fa fa-fw fa-table"></i> State 2</a>
+            <li ng-repeat="item in sidebarMenuItems">
+                <a ui-sref="{{item.state}}"><i class="fa fa-fw fa-{{item.icon}}"></i> {{item.menuTitle}}</a>
             </li>
             <li>
                 <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
