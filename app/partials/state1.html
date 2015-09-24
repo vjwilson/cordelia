@@ -1,5 +1,26 @@
 <!-- partials/state1.html -->
-<h1>State 1</h1>
-<hr/>
-<a ui-sref="state1.list">Show List</a>
-<div ui-view></div>
+
+<app-header></app-header>
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+
+              <h1>State 1</h1>
+              <hr/>
+              <a ui-sref="state1.list">Show List</a>
+              <div ui-view></div>
+
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /#page-wrapper -->

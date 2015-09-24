@@ -3,7 +3,11 @@
 'use strict';
 
 
-  var app = angular.module('cordeliaApp', ['ui.router', 'ngAnimate']);
+  var app = angular.module('cordeliaApp', [
+    'ui.router',
+    'ngAnimate',
+    'global'
+  ]);
 
   /* Configuration */
 
@@ -14,10 +18,14 @@
   function appConfig($stateProvider, $urlRouterProvider) {
     //
     // For any unmatched url, redirect to /state1
-    $urlRouterProvider.otherwise("/state1");
+    $urlRouterProvider.otherwise("/");
     //
     // Now set up the states
     $stateProvider
+      .state('dashboard', {
+        url: "/",
+        templateUrl: "partials/dashboard.html"
+      })
       .state('state1', {
         url: "/state1",
         templateUrl: "partials/state1.html"

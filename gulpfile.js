@@ -49,11 +49,7 @@ gulp.task('sass', function() {
 });
 
 gulp.task("js", function() {
-    return gulp.src([
-        'app/js/main.js',
-        'app/js/state1.list.controller.js',
-        'app/js/state2.list.controller.js'
-        ])
+    return gulp.src(paths.src.js)
     .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
     .pipe(uglify())
