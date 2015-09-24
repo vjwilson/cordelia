@@ -5,7 +5,8 @@
 
   var app = angular.module('cordeliaApp', [
     'ui.router',
-    'ngAnimate'
+    'ngAnimate',
+    'global'
   ]);
 
   /* Configuration */
